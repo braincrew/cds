@@ -3,17 +3,108 @@ import datetime
 import requests
 import urllib
 import pandas as pd
+import seaborn as sns
 import requests
 from requests.auth import HTTPBasicAuth
 import os
 
-files = {'자전거 대여량 예측':
+dataset_files = {
+    '국민연금':{
+        'info': '2020년 9월 국민연금 데이터셋',
+        'data': 'http://sk.jaen.kr:8080/national_pension.csv',
+        'filename': 'national_pension.csv',
+    },
+    '서울시자전거':
+    {
+        'info': '서울시 따릉이 자전거 대여량 정보',
+        'data': 'http://sk.jaen.kr:8080/seoul_bicycle.csv',
+        'filename': 'seoul_bicycle.csv',
+    }
+}
+
+files = {
+    '자전거 대여량 예측':
     {
         'train.csv': 'http://sk.jaen.kr:8080/project/bsd/train.csv',
         'test.csv': 'http://sk.jaen.kr:8080/project/bsd/test.csv',
         'submission.csv': 'http://sk.jaen.kr:8080/project/bsd/sampleSubmission.csv',
+    },
+    '타이타닉 생존자 예측':
+    {
+        'train.csv': 'http://sk.jaen.kr:8080/2020/titanic_train.csv',
+        'test.csv': 'http://sk.jaen.kr:8080/2020/titanic_test.csv',
+        'submission.csv': 'http://sk.jaen.kr:8080/2020/titanic_submission.csv',
+    },
+    '주택 가격 예측':
+    {
+        'train.csv': 'http://sk.jaen.kr:8080/2020/titanic_train.csv',
+        'test.csv': 'http://sk.jaen.kr:8080/2020/titanic_test.csv',
+        'submission.csv': 'http://sk.jaen.kr:8080/2020/titanic_submission.csv',
     }
 }
+
+####### 데이터셋 관련 모듈 #######
+
+class Dataset:
+
+    def __init__(self, data_dir='data'):
+        self.data_dir = data_dir
+        # data 폴더 생성
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+
+        titles = []
+        infos = []
+        datas = []
+        filenames = []
+
+        for t, data in dataset_files.items():
+            titles.append(t)
+            infos.append(data['info'])
+            datas.append(data['data'])
+            filenames.append(data['filename'])
+
+        self.dataset = pd.DataFrame({
+            'name': titles,
+            'info': infos,
+            'data': datas,
+            'filename': filenames,
+        })
+
+
+    def info(self):
+        display(self.dataset[['name', 'info', 'filename']])
+        
+        
+    def load(self, dataset_name):
+        global dataset_files
+        fileurl = dataset_files[dataset_name]['data']
+        filename = dataset_files[dataset_name]['filename']
+
+        # auth
+        username = 'mysuni'
+        password = 'mysuni1!'
+
+        r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
+        filepath = os.path.join(self.data_dir, filename)
+        open(filepath, 'wb').write(r.content)
+        print(f'파일 다운로드: {filepath}')
+        
+        
+dataset = Dataset()
+
+
+def list_data():
+    global dataset
+    dataset.info()
+    
+    
+def load_data(dataset_name):
+    global dataset
+    dataset.load(dataset_name)
+
+
+####### 프로젝트 관련 모듈 #######
 
 project = None
 
