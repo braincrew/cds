@@ -88,7 +88,8 @@ class Dataset:
         r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
         filepath = os.path.join(self.data_dir, filename)
         open(filepath, 'wb').write(r.content)
-        print(f'파일 다운로드: {filepath}')
+        print(f'파일 다운로드 완료\n====================\n\n데이터셋: {dataset_name}\n파일경로: {filepath}\n\n====================')
+        return filepath
         
         
 dataset = Dataset()
@@ -101,7 +102,7 @@ def list_data():
     
 def load_data(dataset_name):
     global dataset
-    dataset.load(dataset_name)
+    return dataset.load(dataset_name)
 
 
 ####### 프로젝트 관련 모듈 #######
@@ -166,11 +167,14 @@ def load_project(project_name, class_info, email):
     # auth
     username = 'mysuni'
     password = 'mysuni1!'
+    
+    print(f'프로젝트: {project_name}\n==============================\n파일 정보\n')
     for filename, fileurl in project_files.items():
         r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
         filepath = os.path.join(DATA_DIR, filename)
         open(filepath, 'wb').write(r.content)
-        print(f'파일 다운로드: {filepath}')
+        print(f'{filename}:\t {filepath}')
+    print(f'\n==============================')
 
 
 def submit(submission_file):
