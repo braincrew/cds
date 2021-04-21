@@ -27,19 +27,19 @@ class Dataset:
         # data 폴더 생성
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
-            
+
         r = requests.get(DATASET_DOWNLOAD_URL)
         open(DATASET_DATA_PATH, 'wb').write(r.content)
-            
+
         with open(DATASET_DATA_PATH) as f:
             datasets = json.load(f)
-            
-        
+
+
         titles = []
         infos = []
         datas = []
         filenames = []
-        
+
         for name_ in datasets:
             titles.append(name_)
             infos.append(datasets[name_]['info'])
@@ -60,7 +60,7 @@ class Dataset:
 
     def load(self, dataset_names):
         global dataset_files
-        username = 'mysuni' 
+        username = 'mysuni'
         password = 'mysuni1!'
 
         if type(dataset_names) == str:
@@ -76,7 +76,7 @@ class Dataset:
                 return
             else:
                 raise Exception('데이터셋 정보가 없습니다.')
-                
+
         elif type(dataset_names) == list or type(dataset_names) == tuple:
             for dataset_name in dataset_names:
                 fileurl = dataset_files[dataset_name]['data']
@@ -115,7 +115,7 @@ class Project:
         self.edu_name = "mySUNI"
         self.class_info = class_info
         self.email = email
-        
+
         r = requests.get(PROJECT_DOWNLOAD_URL)
         open(PROJECT_DATA_PATH, 'wb').write(r.content)
 
@@ -160,7 +160,7 @@ def download_project(project_name, class_info, email):
 
         # data 폴더 경로 지정
         DATA_DIR = 'data'
-        
+
         with open(PROJECT_DATA_PATH) as f:
             datasets = json.load(f)
 
@@ -168,7 +168,7 @@ def download_project(project_name, class_info, email):
         if not os.path.exists(os.path.join(DATA_DIR, project_name)):
             os.makedirs(os.path.join(DATA_DIR, project_name))
 
-        
+
         project_files = datasets[project_name]
 
         # auth
