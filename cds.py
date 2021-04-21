@@ -59,7 +59,7 @@ class Dataset:
 
 
     def load(self, dataset_names):
-        global dataset_files
+        global datasets
         username = 'mysuni'
         password = 'mysuni1!'
 
@@ -79,13 +79,17 @@ class Dataset:
 
         elif type(dataset_names) == list or type(dataset_names) == tuple:
             for dataset_name in dataset_names:
-                fileurl = dataset_files[dataset_name]['data']
-                filename = dataset_files[dataset_name]['filename']
-                for filename, fileurl in zip(filename, fileurl):
-                    r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
-                    filepath = os.path.join(self.data_dir, filename)
-                    open(filepath, 'wb').write(r.content)
-                    print(f'파일 다운로드 완료\n====================\n\n데이터셋: {dataset_name}\n파일경로: {filepath}\n\n====================')
+                df = self.dataset.loc[self.dataset['name'] == dataset_name]
+                if df.shape[0] > 0:
+                    fileurls = df['data'].iloc[0]
+                    filenames = df['filename'].iloc[0]
+                    for fileurl, filename in zip(fileurls, filenames):
+                        r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
+                        filepath = os.path.join(self.data_dir, filename)
+                        open(filepath, 'wb').write(r.content)
+                        print(f'파일 다운로드 완료\n====================\n\n데이터셋: {dataset_name}\n파일경로: {filepath}\n\n====================')
+                else:
+                    raise Exception('데이터셋 정보가 없습니다.')
             return
         else:
             raise Exception('잘못된 정보입니다.')
