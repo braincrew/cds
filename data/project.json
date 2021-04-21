@@ -1,13 +1,18 @@
 {
+  "타이타닉 생존자 예측": {
+    "train.csv": "http://sk.jaen.kr:8080/project/00.Titanic/train.csv",
+    "test.csv": "http://sk.jaen.kr:8080/project/00.Titanic/test.csv",
+    "submission.csv": "http://sk.jaen.kr:8080/project/00.Titanic/submission.csv"
+  },
   "자전거 대여량 예측": {
     "train.csv": "http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/train.csv",
     "test.csv": "http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/test.csv",
     "submission.csv": "http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/submission.csv"
   },
-  "타이타닉 생존자 예측": {
-    "train.csv": "http://sk.jaen.kr:8080/project/00.Titanic/train.csv",
-    "test.csv": "http://sk.jaen.kr:8080/project/00.Titanic/test.csv",
-    "submission.csv": "http://sk.jaen.kr:8080/project/00.Titanic/submission.csv"
+  "상품 구매 예측": {
+    "train.csv": "http://sk.jaen.kr:8080/project/02.ECommerce-Customer-Purchase-Classification/train.csv",
+    "test.csv": "http://sk.jaen.kr:8080/project/02.ECommerce-Customer-Purchase-Classification/test.csv",
+    "submission.csv": "http://sk.jaen.kr:8080/project/02.ECommerce-Customer-Purchase-Classification/submission.csv"
   },
   "주택 가격 예측": {
     "train.csv": "http://sk.jaen.kr:8080/project/04.House-Prices-Prediction/train.csv",

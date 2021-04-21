@@ -1,13 +1,4 @@
 {
-  "국민연금": {
-    "info": "2020년 9월 국민연금 데이터셋",
-    "data": [
-      "http://sk.jaen.kr:8080/datasets/national_pension.csv"
-    ],
-    "filename": [
-      "national_pension.csv"
-    ]
-  },
   "서울시자전거": {
     "info": "서울시 따릉이 자전거 대여량 정보",
     "data": [
@@ -15,15 +6,6 @@
     ],
     "filename": [
       "seoul_bicycle.csv"
-    ]
-  },
-  "서울시실거래가": {
-    "info": "서울시 아파트 실거래가 정보",
-    "data": [
-      "http://sk.jaen.kr:8080/datasets/2020-seoul-apt-price.csv"
-    ],
-    "filename": [
-      "2020-seoul-apt-price.csv"
     ]
   },
   "서울시대중교통": {
@@ -69,5 +51,66 @@
       "mySUNI_2.csv",
       "mySUNI_3.csv"
     ]
-  }
+  },
+  "CCTV데이터분석": {
+    "info": "mySUNI WorkShop - CCTV 데이터 분석",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/01. CCTV_in_Seoul.csv",
+      "http://sk.jaen.kr:8080/datasets/01. population_in_Seoul.xls",
+    ],
+    "filename": [
+      "01. CCTV_in_Seoul.csv",
+      "01. population_in_Seoul.xls",
+    ]
+  },
+  "국민연금데이터분석": {
+    "info": "mySUNI WorkShop - 국민연금 데이터 분석",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/national_pension.csv",
+    ],
+    "filename": [
+      "national_pension.csv",
+    ]
+  },
+  "민간아파트가격동향분석": {
+    "info": "mySUNI WorkShop - 민간 아파트 가격 동향 분석",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/seoul_house_price.csv"
+    ],
+    "filename": [
+      "seoul_house_price.csv"
+    ]
+  },
+  "실거래가분석": {
+    "info": "mySUNI WorkShop - 2020년 아파트 실거래가 분석",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/2020-seoul-apt-price.csv",
+      "http://sk.jaen.kr:8080/datasets/loc_code.xls"
+    ],
+    "filename": [
+      "2020-seoul-apt-price.csv",
+      "loc_code.xlsx"
+    ]
+  },
+  "유가가격분석": {
+    "info": "mySUNI WorkShop - 2020년 유가 가격 분석",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/gas_first_2019.csv",
+      "http://sk.jaen.kr:8080/datasets/gas_second_2019.csv"
+    ],
+    "filename": [
+      "gas_first_2019.csv",
+      "gas_second_2019.csv"
+    ]
+    ,
+    "중고차판매정보분석": {
+      "info": "mySUNI WorkShop - 중고차 판매 정보 분석",
+      "data": [
+        "http://sk.jaen.kr:8080/datasets/vehicles.csv",
+      ],
+      "filename": [
+        "vehicles.csv",
+      ]
+    }
+
 }
