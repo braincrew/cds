@@ -1,0 +1,73 @@
+{
+  "국민연금": {
+    "info": "2020년 9월 국민연금 데이터셋",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/national_pension.csv"
+    ],
+    "filename": [
+      "national_pension.csv"
+    ]
+  },
+  "서울시자전거": {
+    "info": "서울시 따릉이 자전거 대여량 정보",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/seoul_bicycle.csv"
+    ],
+    "filename": [
+      "seoul_bicycle.csv"
+    ]
+  },
+  "서울시실거래가": {
+    "info": "서울시 아파트 실거래가 정보",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/2020-seoul-apt-price.csv"
+    ],
+    "filename": [
+      "2020-seoul-apt-price.csv"
+    ]
+  },
+  "서울시대중교통": {
+    "info": "서울시 대중교통(지하철, 버스) 이용객 정보",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/seoul_transportation.xlsx"
+    ],
+    "filename": [
+      "seoul_transportation.xlsx"
+    ]
+  },
+  "서울시주민등록인구": {
+    "info": "서울시 주민등록인구 정보",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/seoul_population.csv"
+    ],
+    "filename": [
+      "seoul_population.csv"
+    ]
+  },
+  "유가정보": {
+    "info": "2019년 서울시 유가 정보",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/gas_first_2019.csv",
+      "http://sk.jaen.kr:8080/datasets/gas_second_2019.csv"
+    ],
+    "filename": [
+      "gas_first_2019.csv",
+      "gas_second_2019.csv"
+    ]
+  },
+  "PandasFileIO": {
+    "info": "Pandas File I/O 연습 문제용 데이터셋",
+    "data": [
+      "http://sk.jaen.kr:8080/datasets/mySUNI.xlsx",
+      "http://sk.jaen.kr:8080/datasets/mySUNI_1.csv",
+      "http://sk.jaen.kr:8080/datasets/mySUNI_2.csv",
+      "http://sk.jaen.kr:8080/datasets/mySUNI_3.csv"
+    ],
+    "filename": [
+      "mySUNI.xlsx",
+      "mySUNI_1.csv",
+      "mySUNI_2.csv",
+      "mySUNI_3.csv"
+    ]
+  }
+}
