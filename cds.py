@@ -8,91 +8,15 @@ import requests
 from requests.auth import HTTPBasicAuth
 import os
 
-dataset_files = {
-    '국민연금':{
-        'info': '2020년 9월 국민연금 데이터셋',
-        'data': ['http://sk.jaen.kr:8080/datasets/national_pension.csv'],
-        'filename': ['national_pension.csv'],
-    },
-    '서울시자전거':
-    {
-        'info': '서울시 따릉이 자전거 대여량 정보',
-        'data': ['http://sk.jaen.kr:8080/datasets/seoul_bicycle.csv'],
-        'filename': ['seoul_bicycle.csv'],
-    },
-    '서울시실거래가':
-    {
-        'info': '서울시 아파트 실거래가 정보',
-        'data': ['http://sk.jaen.kr:8080/datasets/2020-seoul-apt-price.csv'],
-        'filename':[ '2020-seoul-apt-price.csv'],
-    },
-    '서울시대중교통':
-    {
-        'info': '서울시 대중교통(지하철, 버스) 이용객 정보',
-        'data': ['http://sk.jaen.kr:8080/datasets/seoul_transportation.xlsx'],
-        'filename':[ 'seoul_transportation.xlsx'],
-    },
-    '서울시주민등록인구':
-    {
-        'info': '서울시 주민등록인구 정보',
-        'data': ['http://sk.jaen.kr:8080/datasets/seoul_population.csv'],
-        'filename': ['seoul_population.csv'],
-    },
-    '유가정보':
-    {
-        'info': '2019년 서울시 유가 정보',
-        'data': ['http://sk.jaen.kr:8080/datasets/gas_first_2019.csv','http://sk.jaen.kr:8080/datasets/gas_second_2019.csv'],
-        'filename':[ 'gas_first_2019.csv', 'gas_second_2019.csv'],
-    },
-    'PandasFileIO':
-    {
-        'info': 'Pandas File I/O 연습 문제용 데이터셋',
-        'data': ['http://sk.jaen.kr:8080/datasets/mySUNI.xlsx','http://sk.jaen.kr:8080/datasets/mySUNI_1.csv',
-        'http://sk.jaen.kr:8080/datasets/mySUNI_2.csv', 'http://sk.jaen.kr:8080/datasets/mySUNI_3.csv'],
-        'filename':[ 'mySUNI.xlsx', 'mySUNI_1.csv', 'mySUNI_2.csv', 'mySUNI_3.csv'],
-    }
+# 데이터셋 JSON 파일 경로
+DATASET_DATA_PATH = 'dataset.json'
+DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/data/dataset.json'
+
+# 프로젝트 관련 파일 JSON 파일 경로
+PROJECT_DATA_PATH = 'project.json'
+PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/data/project.json'
 
 
-}
-
-files = {
-    '자전거 대여량 예측':
-    {
-        'train.csv': 'http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/train.csv',
-        'test.csv': 'http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/test.csv',
-        'submission.csv': 'http://sk.jaen.kr:8080/project/01.Bike-Demand-Prediction/submission.csv',
-    },
-    '타이타닉 생존자 예측':
-    {
-        'train.csv': 'http://sk.jaen.kr:8080/project/00.Titanic/train.csv',
-        'test.csv': 'http://sk.jaen.kr:8080/project/00.Titanic/test.csv',
-        'submission.csv': 'http://sk.jaen.kr:8080/project/00.Titanic/submission.csv',
-    },
-    '주택 가격 예측':
-    {
-        'train.csv': 'http://sk.jaen.kr:8080/project/04.House-Prices-Prediction/train.csv',
-        'test.csv': 'http://sk.jaen.kr:8080/project/04.House-Prices-Prediction/test.csv',
-        'submission.csv': 'http://sk.jaen.kr:8080/project/04.House-Prices-Prediction/submission.csv',
-    },
-    '대출 상환 능력 예측':
-    {
-        'train.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/train.csv',
-        'test.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/test.csv',
-        'submission.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/submission.csv',
-        'bureau.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/bureau.csv',
-         'bureau_balance.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/bureau_balance.csv',
-         'credit_card_balance.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/credit_card_balance.csv',
-         'installments_payments.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/installments_payments.csv',
-         'POS_CASH_balance.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/POS_CASH_balance.csv',
-         'previous_application.csv': 'http://sk.jaen.kr:8080/project/03.Home-Credit-Risk-Classification/previous_application.csv'
-    },
-    '웨이퍼 맵 불량 유형 분류':
-    {
-        'train.csv': 'http://sk.jaen.kr:8080/project/05.Wafer-Map-Defect-Classification/train.csv',
-        'test.csv': 'http://sk.jaen.kr:8080/project/05.Wafer-Map-Defect-Classification/test.csv',
-        'submission.csv': 'http://sk.jaen.kr:8080/project/05.Wafer-Map-Defect-Classification/submission.csv',
-    },
-}
 
 ####### 데이터셋 관련 모듈 #######
 
@@ -103,17 +27,24 @@ class Dataset:
         # data 폴더 생성
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
-
+            
+        r = requests.get(DATASET_DOWNLOAD_URL)
+        open(DATASET_DATA_PATH, 'wb').write(r.content)
+            
+        with open(DATASET_DATA_PATH) as f:
+            datasets = json.load(f)
+            
+        
         titles = []
         infos = []
         datas = []
         filenames = []
-
-        for t, data in dataset_files.items():
-            titles.append(t)
-            infos.append(data['info'])
-            datas.append(data['data'])
-            filenames.append(data['filename'])
+        
+        for name_ in datasets:
+            titles.append(name_)
+            infos.append(datasets[name_]['info'])
+            datas.append(datasets[name_]['data'])
+            filenames.append(datasets[name_]['filename'])
 
         self.dataset = pd.DataFrame({
             'name': titles,
@@ -129,18 +60,23 @@ class Dataset:
 
     def load(self, dataset_names):
         global dataset_files
-        username = 'mysuni'
+        username = 'mysuni' 
         password = 'mysuni1!'
 
         if type(dataset_names) == str:
-            fileurl = dataset_files[dataset_names]['data']
-            filename = dataset_files[dataset_names]['filename']
-            for filename, fileurl in zip(filename, fileurl):
-                r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
-                filepath = os.path.join(self.data_dir, filename)
-                open(filepath, 'wb').write(r.content)
-                print(f'파일 다운로드 완료\n====================\n\n데이터셋: {dataset_names}\n파일경로: {filepath}\n\n====================')
-            return
+            df = self.dataset.loc[self.dataset['name'] == dataset_names]
+            if df.shape[0] > 0:
+                fileurl = df['data']
+                filename = df['filename']
+                for f_name, f_url in zip(filename.iloc[0], fileurl.iloc[0]):
+                    r = requests.get(f_url, auth=HTTPBasicAuth(username, password))
+                    filepath = os.path.join(self.data_dir, f_name)
+                    open(filepath, 'wb').write(r.content)
+                    print(f'파일 다운로드 완료\n====================\n\n데이터셋: {dataset_names}\n파일경로: {filepath}\n\n====================')
+                return
+            else:
+                raise Exception('데이터셋 정보가 없습니다.')
+                
         elif type(dataset_names) == list or type(dataset_names) == tuple:
             for dataset_name in dataset_names:
                 fileurl = dataset_files[dataset_name]['data']
@@ -179,6 +115,9 @@ class Project:
         self.edu_name = "mySUNI"
         self.class_info = class_info
         self.email = email
+        
+        r = requests.get(PROJECT_DOWNLOAD_URL)
+        open(PROJECT_DATA_PATH, 'wb').write(r.content)
 
     def __make_submission(self, submission):
         timestring = datetime.datetime.now().strftime('%H-%M-%S')
@@ -221,12 +160,16 @@ def download_project(project_name, class_info, email):
 
         # data 폴더 경로 지정
         DATA_DIR = 'data'
+        
+        with open(PROJECT_DATA_PATH) as f:
+            datasets = json.load(f)
 
         # data 폴더 생성
         if not os.path.exists(os.path.join(DATA_DIR, project_name)):
             os.makedirs(os.path.join(DATA_DIR, project_name))
 
-        project_files = files[project_name]
+        
+        project_files = datasets[project_name]
 
         # auth
         username = 'mysuni'
