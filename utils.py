@@ -17,11 +17,21 @@ validation_msgs =  [
 ]
 
 
-# from_file: 읽어 올 해설 파일 이름
-# to_file: 변환 후 내보낼 파일 명, None
-# folder_path: 기본 값 None. None이 아니면 해당 폴더경로에 생성
-# post_fix: 파일 뒤에 붙혀줌. 그대로 두면 -변환 이라고 postfix 가 붙어서 자동 생성
 def convert_ipynb(from_file, to_file=None, folder_path=None, post_fix='-변환.ipynb'):
+    """
+    from_file: 읽어 올 해설 파일 이름
+    to_file: 변환 후 내보낼 파일 명, None
+    folder_path: 기본 값 None. None이 아니면 해당 폴더경로에 생성
+    post_fix: 파일 뒤에 붙혀줌. 그대로 두면 -변환 이라고 postfix 가 붙어서 자동 생성
+    
+    (예시)
+    - 폴더 지정 안하는 경우, 같은 경로에 생성
+    convert_ipynb(filename)
+    - 폴더 지정시 해당 경로의 폴더에 생성
+    convert_ipynb(filename, folder_path='00-Workshop/변환')
+    - 아무 post_fix 없이 생성
+    convert_ipynb(filename, folder_path='00-Workshop/변환', post_fix='.ipynb')
+    """
     try:
         f = codecs.open(from_file, 'r')
         source = f.read()
@@ -121,3 +131,28 @@ def convert_ipynb(from_file, to_file=None, folder_path=None, post_fix='-변환.i
         json.dump(y, json_file)
     print('생성완료')
     print(f'파일명: {to_file}')
+    
+
+# folder_path: 변환할 폴더 경로
+# new_folder_name: 기본값은 /자동변환. 새로 생성할 폴더명
+def convert_ipynb_folder(folder_path, new_folder_name='변환', post_fix='-변환.ipynb'):
+    """
+    folder_path: 변환할 폴더 경로
+    new_folder_name: 기본값은 /자동변환. 새로 생성할 폴더명
+    
+    (예시)
+    convert_ipynb_folder(folder_path, new_folder_name='실습폴더', post_fix='.ipynb')
+    
+    변환 (post_fix 적용)
+    convert_ipynb_folder(folder_path, post_fix='-자동변환.ipynb')
+    """
+    new_folder_path = os.path.join(folder_path, new_folder_name)
+    
+    if not os.path.isdir(new_folder_path):
+        os.mkdir(new_folder_path)
+
+    ipynb_list = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('ipynb')]
+
+    for file in ipynb_list:
+        convert_ipynb(file, folder_path=new_folder_path, post_fix=post_fix)
+
