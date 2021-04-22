@@ -10,11 +10,11 @@ import os
 
 # 데이터셋 JSON 파일 경로
 DATASET_DATA_PATH = 'dataset.json'
-DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/data/dataset.json'
+DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/dataset.json'
 
 # 프로젝트 관련 파일 JSON 파일 경로
 PROJECT_DATA_PATH = 'project.json'
-PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/data/project.json'
+PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/project.json'
 
 
 
