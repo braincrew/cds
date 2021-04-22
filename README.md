@@ -19,6 +19,7 @@ pip install setuptools twine
 
 2. 버전 업데이트 (setup.py)
    - setup.py 파일내 version +1 업데이트
+   - mySUNI 폴더 내 `__init__.py`의 version +1 업데이트
 
 3. whl 파일 생성
 
