@@ -16,13 +16,17 @@ pip install setuptools twine
 
 1. 소스코드 수정
    - mySUNI 폴더 내 파일 수정 후 2번 진행
-2. whl 파일 생성
+
+2. 버전 업데이트 (setup.py)
+   - setup.py 파일내 version +1 업데이트
+
+3. whl 파일 생성
 
 ```bash
 python setup.py bdist_wheel
 ```
 
-3. whl 파일 업로드 
+4. whl 파일 업로드 
 
 ```bash
 twine upload dist/mySUNI-X.X.X-py3-none-any.whl
