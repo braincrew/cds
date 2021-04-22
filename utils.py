@@ -91,10 +91,11 @@ def convert_ipynb(from_file, to_file=None, folder_path=None, post_fix='-변환.i
                 if len(x['outputs']) > 0 and 'text' in x['outputs'][0].keys():
                     idx.append(i)
                     text = x['outputs'][0]['text']
-
-                    text[0] = '<pre>' + text[0]
-                    text[len(text) - 1] = text[len(text) - 1] + '</pre>'
-                    text.insert(0, '<p><strong>[출력 결과]</strong></p>')
+                    
+                    if len(text) > 0:
+                        text[0] = '<pre>' + text[0]
+                        text[len(text) - 1] = text[len(text) - 1] + '</pre>'
+                        text.insert(0, '<p><strong>[출력 결과]</strong></p>')
                     sources.append(text)
                     x['outputs'][0]['text'] = []
 
