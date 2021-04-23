@@ -198,3 +198,13 @@ def submit(submission_file):
 def end_project(name, csv_file_path, ipynb_file_path):
     global project
     project.project_final_submission(name, csv_file_path, ipynb_file_path)
+
+def update_project(project_name=None, class_info=None, email=None):
+    global project
+    if project_name:
+        project.project_name = project_name
+    if project.class_info:
+        project.class_info = class_info
+    if project.email:
+        project.email = email
+    print('정보 업데이트 완료')
