@@ -1,5 +1,6 @@
 .ipynb_checkpoints
-
+.idea/
+.idea/*
 # vscode
 .vscode/
 
