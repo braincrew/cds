@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='mySUNI',
-    version='1.0.10',
+    version='1.0.11',
     description='mySUNI CDS',
-    author='Teddy Lee, BAEM1N',
-    author_email='teddylee777@gmail.com, baemin.dev@gmail.com',
+    author='BAEM1N, Teddy Lee',
+    author_email='baemin.dev@gmail.com, teddylee777@gmail.com',
     url='https://github.com/braincrew/cds',
     install_requires=['numpy', 'pandas', 'seaborn', 'requests', 'scikit-learn', 'xgboost', 'lightgbm', 'openpyxl', 'xlrd', 'matplotlib'],
     packages=find_packages(exclude=[]),
