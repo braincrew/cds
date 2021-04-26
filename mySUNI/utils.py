@@ -69,24 +69,40 @@ def convert_ipynb(from_file, to_file=None, folder_path=None, post_fix='-변환.i
 
         if 'outputs' in x.keys():
             if not flag and not valid_flag:
-                x['outputs'] = []
+                x['outputs'] = []  
             elif len(x['outputs']) > 0:
-                if 'data' in x['outputs'][0].keys():
-                    if 'text/html' in x['outputs'][0]['data'].keys():
-                        idx.append(i)
-                        html_text = x['outputs'][0]['data']['text/html']
-                        html_text.insert(0, '<p><strong>[출력 결과]</strong></p>')
-                        sources.append(html_text)
-                        x['outputs'] = []
-                    elif 'text/plain' in x['outputs'][0]['data'].keys():
-                        idx.append(i)
-                        plain_text = x['outputs'][0]['data']['text/plain']
-
-                        plain_text[0] = '<pre>' + plain_text[0]
-                        plain_text[len(plain_text) - 1] = plain_text[len(plain_text) - 1] + '</pre>'
-                        plain_text.insert(0, '<p><strong>[출력 결과]</strong></p>')
-                        sources.append(plain_text)
-                        x['outputs'] = []
+                for outputs in x['outputs']:
+                    if 'data' in outputs.keys():
+                        clear_flag = False
+                        for key, value in outputs.items():
+                            if type(value) == dict and len(value) > 0:
+                                add_cnt = 0
+                                for key2 in value.keys():
+                                    if 'text/html' == key2:
+                                        idx.append(i + add_cnt)
+                                        html_text = value['text/html']
+                                        html_text.insert(0, '<p><strong>[출력 결과]</strong></p>')
+                                        sources.append(html_text)
+                                        clear_flag = True
+                                        break
+                                    elif 'text/plain' == key2:
+                                        idx.append(i + add_cnt)
+                                        plain_text = value['text/plain']
+                                        plain_text[0] = '<pre>' + plain_text[0]
+                                        plain_text[len(plain_text)-1] = plain_text[len(plain_text)-1] + '</pre>'
+                                        plain_text.insert(0, '<p><strong>[출력 결과]</strong></p>')
+                                        sources.append(plain_text)
+                                        clear_flag = True
+                                        add_cnt += 1
+                                    elif 'image/png' == key2:
+                                        idx.append(i + add_cnt)
+                                        plain_image = value['image/png']
+                                        plain_image = '<img src="data:image/png;base64,' + plain_image.replace('\n','') + '"/>'
+                                        sources.append(plain_image)
+                                        clear_flag = True
+                                        add_cnt += 1
+                        if clear_flag:
+                            x['outputs'] = []
 
                 if len(x['outputs']) > 0 and 'text' in x['outputs'][0].keys():
                     idx.append(i)
