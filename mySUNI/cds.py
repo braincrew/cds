@@ -138,11 +138,11 @@ class Project:
         r = requests.post(url, files=files)
         r.encoding = 'utf-8'
         message = ''
-        if 'msg' in r.text:
-            data = json.loads(r.text)
+        data = json.loads(r.text)
+        if 'trial' in data.keys():
             message = '제출 여부 :{}\n오늘 제출 횟수 : {}\n제출 결과:{}'.format(data['msg'], data['trial'], data['score'])
         else:
-            message = r.text
+            message = '제출 실패 : {}'.format(data['msg'])
         return message
 
     def project_final_submission(self, name, csv_file_path, ipynb_file_path):
