@@ -117,7 +117,8 @@ class Project:
     def __init__(self, project_name, class_info, email):
         self.project_name = project_name
         self.edu_name = "mySUNI"
-        self.class_info = class_info
+        self.edu_rnd = class_info.split()[0]
+        self.edu_class = class_info.split()[1]
         self.email = email
 
         r = requests.get(PROJECT_DOWNLOAD_URL)
@@ -133,7 +134,7 @@ class Project:
     def __project_submission(self, file_name):
         file_path = './'
         url = f'http://manage.jaen.kr/api/studentProject/apiScoring?edu_name={self.edu_name}\
-        &edu_rnd={self.class_info}&mail={self.email}&project_name={self.project_name}&file_name={file_name}'
+        &edu_rnd={self.edu_rnd}&edu_class={self.edu_class}&mail={self.email}&project_name={self.project_name}&file_name={file_name}'
         files = {'file': (file_name, open(file_path + file_name, 'rb'), 'text/csv')}
         r = requests.post(url, files=files)
         r.encoding = 'utf-8'
