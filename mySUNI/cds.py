@@ -7,6 +7,7 @@ import seaborn as sns
 import requests
 from requests.auth import HTTPBasicAuth
 import os
+import datetime
 
 # 데이터셋 JSON 파일 경로
 DATASET_DATA_PATH = 'dataset.json'
@@ -15,8 +16,6 @@ DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/myS
 # 프로젝트 관련 파일 JSON 파일 경로
 PROJECT_DATA_PATH = 'project.json'
 PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/project.json'
-
-
 
 ####### 데이터셋 관련 모듈 #######
 
@@ -106,6 +105,93 @@ def list_data():
 def download_data(dataset_name):
     global dataset
     return dataset.load(dataset_name)
+
+####### 워크샵 관련 모듈 #######
+
+q = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-실습.ipynb'],
+ 'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-실습.ipynb'],
+ 'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-실습.ipynb'],
+ 'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-실습.ipynb'],
+ 'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-실습.ipynb'],
+'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(실습).ipynb',
+ 'mySUNI-WorkShop-국민연금 데이터 분석(실습).ipynb',
+ 'mySUNI-WorkShop-민간 아파트 가격동향 분석(실습).ipynb',
+ 'mySUNI-WorkShop-아파트 실거래가 분석 I(실습).ipynb',
+ 'mySUNI-WorkShop-아파트 실거래가 분석 II(실습).ipynb',
+ 'mySUNI-WorkShop-유가 가격 분석 (실습).ipynb',
+ 'mySUNI-WorkShop-중고차 판매 정보 분석 (실습).ipynb'],
+ 'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습(코드추가).ipynb',
+  'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습.ipynb'],
+ 'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-실습(코드추가).ipynb',
+  'mySUNI-WorkShop-07-따릉이 대여량 예측-실습.ipynb'],
+ 'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-실습(코드추가).ipynb',
+  'mySUNI-WorkShop-08-집 값 예측-실습.ipynb'],
+ 'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (실습).ipynb',
+  'mySUNI-WorkShop-사용자 이탈 예측 (실습).ipynb',
+  'mySUNI-WorkShop-에너지 효율 예측 (실습).ipynb',
+  'mySUNI-WorkShop-와인 유형 분류 (실습).ipynb']}
+
+s = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-해설.ipynb'],
+ 'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-해설.ipynb'],
+ 'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-해설.ipynb'],
+ 'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-해설.ipynb'],
+ 'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-해설.ipynb'],
+'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(해설).ipynb',
+ 'mySUNI-WorkShop-국민연금 데이터 분석(해설).ipynb',
+ 'mySUNI-WorkShop-민간 아파트 가격동향 분석(해설).ipynb',
+ 'mySUNI-WorkShop-아파트 실거래가 분석 I(해설).ipynb',
+ 'mySUNI-WorkShop-아파트 실거래가 분석 II(해설).ipynb',
+ 'mySUNI-WorkShop-유가 가격 분석 (해설).ipynb',
+ 'mySUNI-WorkShop-중고차 판매 정보 분석 (해설).ipynb'],
+ 'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-해설.ipynb'],
+ 'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-해설.ipynb'],
+ 'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-해설.ipynb'],
+ 'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (해설).ipynb',
+  'mySUNI-WorkShop-사용자 이탈 예측 (해설).ipynb',
+  'mySUNI-WorkShop-에너지 효율 예측 (해설).ipynb',
+  'mySUNI-WorkShop-와인 유형 분류 (해설).ipynb']}
+
+def list_workshop():
+    workshop = pd.DataFrame({
+        '워크샵':q.keys(),
+    })
+    display(workshop)
+
+def download_workshop(workshop_name, sol=False, local=False):
+    # auth
+    username = 'mysuni'
+    password = 'mysuni1!'
+
+    if local:
+        if not os.path.exists(os.path.join('workshop', f'{workshop_name}')):
+            os.makedirs(os.path.join('workshop', f'{workshop_name}'))
+
+    else:
+        if not os.path.exists(os.path.join('/mnt/elice', 'workshop', f'{workshop_name}')):
+            os.makedirs(os.path.join('/mnt/elice', 'workshop', f'{workshop_name}'))
+
+    if sol:
+        workshop_files = s[workshop_name]
+    else:
+        workshop_files = q[workshop_name]
+
+    print(f'워크샵: {workshop_files}\n==============================\n파일 정보\n')
+    for workshop_file in workshop_files:
+        fileurl = "http://sk.jaen.kr:8080/workshop/" + workshop_file
+        r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
+        if local:
+            filepath = os.path.join('workshop', f'{workshop_name}', workshop_file)
+        else:
+            filepath = os.path.join('/mnt/elice','workshop', f'{workshop_name}', workshop_file)
+
+        if os.path.exists(filepath):
+            file = filepath.split('.')
+            now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            file[0] = file[0] + now
+            filepath = ".".join(file)
+        open(filepath, 'wb').write(r.content)
+        print(f'저장 위치:\t {filepath}')
+    print(f'\n==============================')
 
 
 ####### 프로젝트 관련 모듈 #######
