@@ -1,6 +1,10 @@
 .ipynb_checkpoints
 .idea/
 .idea/*
+data/*/*.csv
+data/*/*.zip
+data/*/*.json
+data/*.csv
 # vscode
 .vscode/
 

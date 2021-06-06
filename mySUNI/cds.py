@@ -8,6 +8,9 @@ import requests
 from requests.auth import HTTPBasicAuth
 import os
 import datetime
+from tqdm.notebook import tqdm
+import zipfile
+from IPython.display import clear_output
 
 # 데이터셋 JSON 파일 경로
 DATASET_DATA_PATH = 'dataset.json'
@@ -266,13 +269,35 @@ def download_project(project_name, class_info, email):
         username = 'mysuni'
         password = 'mysuni1!'
 
-        print(f'프로젝트: {project_name}\n==============================\n파일 정보\n')
+        print(f'프로젝트: {project_name}\n==============================\n파일 다운로드\n')
         for filename, fileurl in project_files.items():
-            r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
+            r = requests.get(fileurl, auth=HTTPBasicAuth(username, password), stream=True)
+
             filepath = os.path.join(DATA_DIR, project_name, filename)
-            open(filepath, 'wb').write(r.content)
-            print(f'{filename}:\t {filepath}')
+            print(f'{filename}', end=' ')
+            ##
+            total_size_in_bytes = int(r.headers.get('content-length', 0))
+            block_size = 1024
+
+            progress_bar = tqdm(total=total_size_in_bytes, unit='B', unit_scale=True)
+            with open(filepath, 'wb') as file:
+                for data in r.iter_content(block_size):
+                    progress_bar.update(len(data))
+                    file.write(data)
+            progress_bar.close()
+            if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
+                print("ERROR: 다운로드 도중 에러가 발생하였습니다.")
+            else:
+                if filepath.endswith('.zip'):
+                    print(f'압축 해제 및 프로젝트 파일 구성중...')
+                    zipfile.ZipFile(filepath).extractall(os.path.join(DATA_DIR, project_name))
+            ## 다운로드 progress bar 추가 ##
+        clear_output(wait=True)
         print(f'\n==============================')
+        print(f'프로젝트: {project_name}\n==============================\n파일 목록\n')
+        for f in [fs for fs in os.listdir(os.path.join('data', project_name)) if 'csv' in fs]:
+            print(f'{f}\n- {os.path.join(DATA_DIR, project_name, f)}\n')
+        print(f'==============================')
     except:
         raise Exception('잘못된 정보입니다.')
 
