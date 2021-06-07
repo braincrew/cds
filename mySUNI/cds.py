@@ -7,6 +7,7 @@ import seaborn as sns
 import requests
 from requests.auth import HTTPBasicAuth
 import os
+import time
 import datetime
 from tqdm.notebook import tqdm
 import zipfile
@@ -247,13 +248,19 @@ class Project:
         print(self.__project_submission(filename))
 
 
-def download_project(project_name, class_info, email):
+def download_project(project_name, class_info, email, use_path=None, skip_download=False):
+    '''
+    use_path: 지정 폴더에 다운로드
+    skip_download: 폴더에 데이터가 존재할 시 SKIP. 단 CHECKSUM 비교는 안함.
+    '''
     global project, files
     try:
         project = Project(project_name, class_info=class_info, email=email)
 
         # data 폴더 경로 지정
         DATA_DIR = 'data'
+        if use_path is not None:
+            DATA_DIR = use_path
 
         with open(PROJECT_DATA_PATH) as f:
             datasets = json.load(f)
@@ -262,8 +269,27 @@ def download_project(project_name, class_info, email):
         if not os.path.exists(os.path.join(DATA_DIR, project_name)):
             os.makedirs(os.path.join(DATA_DIR, project_name))
 
-
         project_files = datasets[project_name]
+
+        # skip download 체크
+        file_to_remove = []
+        if skip_download:
+            for filename, _ in project_files.items():
+                filepath = os.path.join(DATA_DIR, project_name, filename)
+                if os.path.exists(filepath):
+                    file_to_remove.append(filename)
+                    print(f'{filename} 파일이 {filepath} 이미 존재하여 다운로드를 SKIP 합니다..')
+
+        print(f'카운트 다운!')
+        time_cnt = 1
+        while time_cnt <= 3:
+            print(f'{time_cnt}', end=' ')
+            time.sleep(1)
+            time_cnt += 1
+        clear_output(wait=True)
+
+        for k in file_to_remove:
+            project_files.pop(k)
 
         # auth
         username = 'mysuni'
@@ -275,7 +301,8 @@ def download_project(project_name, class_info, email):
 
             filepath = os.path.join(DATA_DIR, project_name, filename)
             print(f'{filename}', end=' ')
-            ##
+
+            ## 다운로드 progress bar 추가 ##
             total_size_in_bytes = int(r.headers.get('content-length', 0))
             block_size = 1024
 
