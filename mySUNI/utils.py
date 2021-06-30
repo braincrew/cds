@@ -326,7 +326,14 @@ def add_error(name_, actual, prediction):
     plot.add_model(name_, actual, prediction)
 
 
+def clear_error():
+    global plot
+    plot.clear_error()
+
+
 def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=10, round=5):
     global plot
     plot.set_plot_options(figsize=figsize, font_big=font_big, font_small=font_small, graph_width=graph_width, round=round)
+
+
 
