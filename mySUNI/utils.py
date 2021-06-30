@@ -210,24 +210,28 @@ class ModelPlot():
     def set_error(self, error='mse'):
         if error == 'mse':
             self.error = mean_squared_error
+            self.error_name = 'mse'
             return error, self.error
         elif error == 'rmse':
             def rmse(y_true, y_pred):
                 return np.sqrt(mean_squared_error(y_true, y_pred))
             self.error = rmse
+            self.error_name = 'rmse'
             return error, self.error
 
         elif error == 'rmsle':
             def rmsle(y_true, y_pred):
                 return np.sqrt(mean_squared_log_error(y_true, y_pred))
-
             self.error = rmsle
+            self.error_name = 'rmsle'
             return error, self.error
         elif error == 'mae':
             self.error = mean_absolute_error
+            self.error_name = 'mae'
             return error, self.error
         else:
             self.error = mean_squared_error
+            self.error_name = 'mse'
             return 'mse', mean_squared_error
 
     def plot_predictions(self, name_, actual, pred):
@@ -291,6 +295,9 @@ class ModelPlot():
             self.my_predictions.pop(name_)
         else:
             print('(에러) 지정한 키 값으로 등록된 모델이 없습니다.')
+
+    def clear_error(self):
+        self.my_predictions.clear()
 
 
 plot = ModelPlot(error='mse')
