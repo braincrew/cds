@@ -336,4 +336,35 @@ def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=1
     plot.set_plot_options(figsize=figsize, font_big=font_big, font_small=font_small, graph_width=graph_width, round=round)
 
 
+########## 에러 메시지 ############
+
+def check_error(prediction):
+    msg = 'PASS!'
+    try:
+        if prediction[prediction < 0].size > 0:
+            msg = get_error_message(1)
+        elif len(prediction) != 6493:
+            msg = get_error_message(2)
+    except:
+        msg = 'prediction 에 오류가 있습니다.'
+
+    print(msg)
+
+def get_error_message(error_code=0):
+    """
+    error_code
+    1: Bike Sharing Demand: 음수 값 제출시 에러
+    2: Bike Sharing Demand: test셋의 length와 맞지 않음
+    """
+    if error_code == 0:
+        return '정상'
+    elif error_code == 1:
+        return '[오류]\n\n예측 값에(prediction) 음수 값이 있습니다!!\n\n대여량은 음수 값을 가질 수 없으므로 음수 값을 포함하는 정답은 제출이 불가합니다.\n\n음수값 확인 방법(코드):\n\nprediction[prediction < 0]'
+    elif error_code == 2:
+        return '[오류]\n\n예측 값인 prediction의 길이가 6493개 이어야 합니다.\n\nlen(prediction) 의 값이 6493개가 나오지 않는다면 제출이 불가 합니다.\n\n(test 세트로 예측했는지 확인해 주세요)'
+    else:
+        return ''
+
+
+
 
