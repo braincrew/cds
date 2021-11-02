@@ -286,6 +286,39 @@ class ModelPlot():
 
         plt.show()
 
+    def plot_all(self):
+        y_value = sorted(self.my_predictions.items(), key=lambda x: x[1], reverse=True)
+
+        df = pd.DataFrame(y_value, columns=['model', 'error'])
+
+        print(df)
+
+        min_ = max(df['error'].min() - 10, 0)
+        max_ = df['error'].max()
+        diff = (max_ - min_)
+        max_ += diff * 0.25
+        offset = diff * 0.05
+
+        length = len(df) / 2
+
+        fig, ax = plt.subplots(1, 1)
+        fig.set_size_inches(self.graph_width, length)
+        ax.set_yticks(np.arange(len(df)))
+        ax.set_yticklabels(df['model'], fontsize=self.font_small)
+
+        bars = ax.barh(np.arange(len(df)), df['error'], height=0.3)
+
+        for i, v in enumerate(df['error']):
+            idx = np.random.choice(len(self.colors))
+            bars[i].set_color(self.colors[idx])
+            ax.text(v + offset, i, str(round(v, self.round)), color='k', fontsize=self.font_small, fontweight='bold',
+                    verticalalignment='center')
+
+        ax.set_title(f'{self.error_name.upper()} Error', fontsize=self.font_big)
+        ax.set_xlim(min_, max_)
+
+        plt.show()
+
     def add_model(self, name_, actual, pred):
         err = self.error(actual, pred)
         self.my_predictions[name_] = err
@@ -316,6 +349,11 @@ def plot_error(name_, actual, prediction):
     plot.plot_error(name_, actual, prediction)
 
 
+def plot_all():
+    global plot
+    plot.plot_all()
+
+
 def remove_error(name_):
     global plot
     plot.remove_model(name_)
@@ -338,32 +376,45 @@ def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=1
 
 ########## 에러 메시지 ############
 
+class ErrorChecker():
+    def __init__(self, test_size=None, evaluation='mse'):
+        self.test_size = test_size
+        self.evaluation = evaluation
+    
+    def check_error(self, pred):
+        """
+        error_code
+        1: Bike Sharing Demand: 음수 값 제출시 에러
+        2: Bike Sharing Demand: test셋의 length와 맞지 않음
+        """
+        msg = "[통과] 문제가 발견되지 않았습니다."
+        try:
+            if (self.evaluation == 'rmsle') and (pred[pred < 0].size > 0):
+                msg = "[오류]\n\n예측 값에(prediction) 음수 값이 있습니다!!\n\n대여량은 음수 값을 가질 수 없으므로 음수 값을 포함하는 정답은 제출이 불가합니다.\n\n음수값 확인 방법(코드):\n\nprediction[prediction < 0]"
+            elif (self.test_size) and len(pred) != self.test_size:
+                msg = f"[오류] \n\n예측 값인 prediction의 길이가 {self.test_size}개 이어야 합니다.\n\nlen(prediction) 의 값이 {self.test_size}개가 나오지 않는다면 제출이 불가 합니다.\n\n(test 세트로 예측했는지 확인해 주세요)"
+        except Exception as err:
+            msg = f'[오류] {err}'
+        print(msg)
+    
+    def set_values(self,  test_size=None, evaluation=None):
+        if test_size is not None:
+            self.test_size = test_size
+        if evaluation is not None:
+            self.evaluation = evaluation
+    
+    def get_values(self):
+        print(f'test case: {self.test_size}\nevaluation: {self.evaluation}')
+
+err_checker = ErrorChecker(test_size=6493, evaluation='rmsle')
+
 def check_error(prediction):
-    msg = 'PASS!'
-    try:
-        if prediction[prediction < 0].size > 0:
-            msg = get_error_message(1)
-        elif len(prediction) != 6493:
-            msg = get_error_message(2)
-    except:
-        msg = 'prediction 에 오류가 있습니다.'
+    global err_checker
+    err_checker.check_error(prediction)
 
-    print(msg)
-
-def get_error_message(error_code=0):
-    """
-    error_code
-    1: Bike Sharing Demand: 음수 값 제출시 에러
-    2: Bike Sharing Demand: test셋의 length와 맞지 않음
-    """
-    if error_code == 0:
-        return '정상'
-    elif error_code == 1:
-        return '[오류]\n\n예측 값에(prediction) 음수 값이 있습니다!!\n\n대여량은 음수 값을 가질 수 없으므로 음수 값을 포함하는 정답은 제출이 불가합니다.\n\n음수값 확인 방법(코드):\n\nprediction[prediction < 0]'
-    elif error_code == 2:
-        return '[오류]\n\n예측 값인 prediction의 길이가 6493개 이어야 합니다.\n\nlen(prediction) 의 값이 6493개가 나오지 않는다면 제출이 불가 합니다.\n\n(test 세트로 예측했는지 확인해 주세요)'
-    else:
-        return ''
+def set_error_values(test_size=None, evaluation=None):
+    global err_checker
+    err_checker.set_values(test_size=test_size, evaluation=evaluation)
 
 
 
