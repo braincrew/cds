@@ -325,7 +325,8 @@ def download_project(project_name, class_info, email, use_path=None, skip_downlo
         for f in [fs for fs in os.listdir(os.path.join('data', project_name)) if 'csv' in fs]:
             print(f'{f}\n- {os.path.join(DATA_DIR, project_name, f)}\n')
         print(f'==============================')
-    except:
+    except Exception as err:
+        print(err)
         raise Exception('잘못된 정보입니다.')
 
 
