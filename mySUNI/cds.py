@@ -239,7 +239,7 @@ class Project:
     def project_final_submission(self, name, csv_file_path, ipynb_file_path):
         url = "http://sk.jaen.kr/submission_final"
         files = [('file', open(csv_file_path, 'rb')), ('file', open(ipynb_file_path, 'rb'))]
-        data = {'name': name}
+        data = {'name': name, 'rnd':self.edu_rnd, 'class':self.edu_class}
         res = requests.post(url, data=data, files=files)
         print(res.text)
 
