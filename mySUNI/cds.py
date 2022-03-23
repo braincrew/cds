@@ -236,9 +236,14 @@ class Project:
             message = '제출 실패 : {}'.format(data['msg'])
         return message
 
-    def project_final_submission(self, name, csv_file_path, ipynb_file_path):
+    def project_final_submission(self, name, csv_file_path=None, ipynb_file_path=None):
         url = "http://sk.jaen.kr/submission_final"
-        files = [('file', open(csv_file_path, 'rb')), ('file', open(ipynb_file_path, 'rb'))]
+        files = []
+        if csv_file_path is not None:
+            files.append(('file', open(csv_file_path, 'rb')))
+        if ipynb_file_path is None:
+            raise Exception('노트북(ipynb) 파일의 경로를 입력해 주세요.') 
+        files.append(('file', open(ipynb_file_path, 'rb')))
         data = {'name': name, 'rnd':self.edu_rnd, 'class':self.edu_class}
         res = requests.post(url, data=data, files=files)
         print(res.text)
