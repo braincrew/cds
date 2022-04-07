@@ -384,8 +384,8 @@ class ErrorChecker():
     def check_error(self, pred):
         """
         error_code
-        1: Bike Sharing Demand: 음수 값 제출시 에러
-        2: Bike Sharing Demand: test셋의 length와 맞지 않음
+        1: 음수 값 제출시 에러
+        2: test셋의 length와 맞지 않음
         """
         msg = "[통과] 문제가 발견되지 않았습니다."
         try:
