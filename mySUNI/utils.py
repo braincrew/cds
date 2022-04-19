@@ -373,7 +373,16 @@ def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=1
     global plot
     plot.set_plot_options(figsize=figsize, font_big=font_big, font_small=font_small, graph_width=graph_width, round=round)
 
-
+def summary(df):
+    print(f'데이터 프레임 형태(shape) : {df.shape}')
+    s = pd.DataFrame(df.dtypes, columns=['데이터 타입'])
+    s = s.reset_index()
+    s = s.rename(columns={'index':'특성명'})
+    s['결측치 개수'] = df.isna().sum().values
+    s['고유값 개수'] = df.nunique().values
+    s['고유값'] = [df[col_name].unique() for col_name in df.columns]
+    return s
+    
 ########## 에러 메시지 ############
 
 class ErrorChecker():
