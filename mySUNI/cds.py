@@ -221,9 +221,9 @@ class Project:
         print('파일을 저장하였습니다. 파일명: {}'.format(filename))
         return filename
 
-    def __project_submission(self, file_name):
+    def __project_submission(self, file_name, server='manage'):
         file_path = './'
-        url = f'http://manage.jaen.kr/api/studentProject/apiScoring?edu_name={self.edu_name}\
+        url = f'http://{server}.jaen.kr/api/studentProject/apiScoring?edu_name={self.edu_name}\
         &edu_rnd={self.edu_rnd}&edu_class={self.edu_class}&mail={self.email}&project_name={self.project_name}&file_name={file_name}'
         files = {'file': (file_name, open(file_path + file_name, 'rb'), 'text/csv')}
         r = requests.post(url, files=files)
