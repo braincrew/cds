@@ -229,18 +229,19 @@ class Project:
         r = requests.post(url, files=files)
         r.encoding = 'utf-8'
         message = ''
-        data = json.loads(r.text)
-        if 'trial' in data.keys():
-            message = '제출 여부 :{}\n오늘 제출 횟수 : {}\n제출 결과:{}'.format(data['msg'], data['trial'], data['score'])
-        else:
-            message = '제출 실패 : {}'.format(data['msg'])
+        try:
+            data = json.loads(r.text) # json 변환 실패시 원본 메세지 사용
+            if 'trial' in data.keys():
+                message = '제출 여부 :{}\n오늘 제출 횟수 : {}\n제출 결과:{}'.format(data['msg'], data['trial'], data['score'])
+            else:
+                message = '제출 실패 : {}'.format(data['msg'])
+        except:
+            message = '변환 에러 발생 : {}'.format(r.text)
         return message
 
-    def project_final_submission(self, name, csv_file_path=None, ipynb_file_path=None):
+    def project_final_submission(self, name, ipynb_file_path=None):
         url = "http://sk.jaen.kr/submission_final"
         files = []
-        if csv_file_path is not None:
-            files.append(('file', open(csv_file_path, 'rb')))
         if ipynb_file_path is None:
             raise Exception('노트북(ipynb) 파일의 경로를 입력해 주세요.') 
         files.append(('file', open(ipynb_file_path, 'rb')))
@@ -340,9 +341,9 @@ def submit(submission_file):
     project.submit(submission_file)
 
 
-def end_project(name, csv_file_path, ipynb_file_path):
+def end_project(name, ipynb_file_path):
     global project
-    project.project_final_submission(name, csv_file_path, ipynb_file_path)
+    project.project_final_submission(name, ipynb_file_path)
 
 def update_project(project_name=None, class_info=None, email=None):
     global project
@@ -353,68 +354,3 @@ def update_project(project_name=None, class_info=None, email=None):
     if project.email:
         project.email = email
     print('정보 업데이트 완료')
-
-
-def upload_file(file):
-    url = "http://sk.jaen.kr/upload_cds"
-    files = [('file', open(file, 'rb'))]
-    res = requests.post(url, files=files)
-    print(res.text)
-
-def download_file(file_name, local=False):
-    dfs = {
-        '5차수B-2반':['01-pandas-자료구조 (실습).ipynb',
- '02-pandas-파일입출력 (실습).ipynb',
- '03-pandas-조회-정렬-조건-필터 (실습).ipynb',
- '04-pandas-통계 (실습).ipynb',
- '05-pandas-복제-결측치 (실습).ipynb',
- '06-pandas-전처리-추가-삭제-데이터변환 (실습).ipynb',
- '07-pandas-groupby-pivottable (실습) (2).ipynb',
- '07-pandas-groupby-pivottable (실습).ipynb',
- '08-pandas-concat-merge (실습).ipynb',
- '09-데이터 시각화.ipynb',
- 'mySUNI-5차수-DAY1-실습코드.ipynb',
- 'mySUNI-5차수-DAY6-실습코드.ipynb',
- 'mySUNI-5차수-DAY7-실습코드.ipynb',
- 'mySUNI-5차수-DAY8-실습코드.ipynb',
- 'mySUNI-WorkShop-00-Python-해설.ipynb',
- 'mySUNI-WorkShop-02-Pandas-해설.ipynb',
- 'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-리뷰.ipynb',
- 'mySUNI-WorkShop-07-따릉이 대여량 예측-리뷰.ipynb',
- 'mySUNI_5차수_DAY2-실습코드.ipynb',
- 'mySUNI_5차수_DAY3-실습코드.ipynb']
-    }
-    # auth
-    username = 'mysuni'
-    password = 'mysuni1!'
-
-    if local:
-        if not os.path.exists(os.path.join('download')):
-            os.makedirs(os.path.join('download'))
-
-    else:
-        if not os.path.exists(os.path.join('/mnt/elice', 'download')):
-            os.makedirs(os.path.join('/mnt/elice', 'download'))
-
-    download_files = dfs[file_name]
-
-    try:
-        print(f'\n==============================')
-        for download_file in download_files:
-            fileurl = "http://sk.jaen.kr:8080/download/" + file_name + '/' + download_file
-            r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
-            if local:
-                filepath = os.path.join('download', download_file)
-            else:
-                filepath = os.path.join('/mnt/elice', 'download', download_file)
-
-            if os.path.exists(filepath):
-                file = filepath.split('.')
-                now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                file[0] = file[0] + now
-                filepath = ".".join(file)
-            open(filepath, 'wb').write(r.content)
-            print(f'저장 위치:\t {filepath}')
-        print(f'\n==============================')
-    except OSError:
-        raise Exception("함수에서 local=True를 사용해주세요.")

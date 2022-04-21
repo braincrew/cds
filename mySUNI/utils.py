@@ -373,7 +373,37 @@ def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=1
     global plot
     plot.set_plot_options(figsize=figsize, font_big=font_big, font_small=font_small, graph_width=graph_width, round=round)
 
+def summary(df):
+    print(f'데이터 프레임 형태(shape) : {df.shape}')
+    s = pd.DataFrame(df.dtypes, columns=['데이터 타입'])
+    s = s.reset_index()
+    s = s.rename(columns={'index':'특성명'})
+    s['결측치 개수'] = df.isna().sum().values
+    s['고유값 개수'] = df.nunique().values
+    s['고유값'] = [df[col_name].unique() for col_name in df.columns]
+    return s
 
+def gini(y_true, y_pred):
+    # 실제값과 예측값의 크기가 같은지 확인 (값이 다르면 오류 발생)
+    if y_true.shape != y_pred.shape:
+        raise Exception('Shape Error : 실제값과 예측값의 개수가 일치하지 않습니다.')
+
+    n_samples = y_true.shape[0]                      # 데이터 개수
+    L_mid = np.linspace(1 / n_samples, 1, n_samples) # 대각선 값
+
+    # 1) 예측값에 대한 지니계수
+    pred_order = y_true[y_pred.argsort()] # y_pred 크기순으로 y_true 값 정렬
+    L_pred = np.cumsum(pred_order) / np.sum(pred_order) # 로렌츠 곡선
+    G_pred = np.sum(L_mid - L_pred)       # 예측 값에 대한 지니계수
+
+    # 2) 예측이 완벽할 때 지니계수
+    true_order = y_true[y_true.argsort()] # y_true 크기순으로 y_true 값 정렬
+    L_true = np.cumsum(true_order) / np.sum(true_order) # 로렌츠 곡선
+    G_true = np.sum(L_mid - L_true)       # 예측이 완벽할 때 지니계수
+
+    # 정규화된 지니계수
+    return G_pred / G_true  
+    
 ########## 에러 메시지 ############
 
 class ErrorChecker():
@@ -384,8 +414,8 @@ class ErrorChecker():
     def check_error(self, pred):
         """
         error_code
-        1: Bike Sharing Demand: 음수 값 제출시 에러
-        2: Bike Sharing Demand: test셋의 length와 맞지 않음
+        1: 음수 값 제출시 에러
+        2: test셋의 length와 맞지 않음
         """
         msg = "[통과] 문제가 발견되지 않았습니다."
         try:
