@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mySUNI',
-    version='1.4.4',
+    version='1.4.5',
     description='mySUNI CDS',
     author='BAEM1N, Teddy Lee',
     author_email='baemin.dev@gmail.com, teddylee777@gmail.com',
