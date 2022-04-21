@@ -229,11 +229,14 @@ class Project:
         r = requests.post(url, files=files)
         r.encoding = 'utf-8'
         message = ''
-        data = json.loads(r.text)
-        if 'trial' in data.keys():
-            message = '제출 여부 :{}\n오늘 제출 횟수 : {}\n제출 결과:{}'.format(data['msg'], data['trial'], data['score'])
-        else:
-            message = '제출 실패 : {}'.format(data['msg'])
+        try:
+            data = json.loads(r.text) # json 변환 실패시 원본 메세지 사용
+            if 'trial' in data.keys():
+                message = '제출 여부 :{}\n오늘 제출 횟수 : {}\n제출 결과:{}'.format(data['msg'], data['trial'], data['score'])
+            else:
+                message = '제출 실패 : {}'.format(data['msg'])
+        except:
+            message = '변환 에러 발생 : {}'.format(r.text)
         return message
 
     def project_final_submission(self, name, ipynb_file_path=None):
