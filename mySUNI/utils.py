@@ -381,7 +381,13 @@ def summary(df):
     s['결측치 개수'] = df.isna().sum().values
     s['고유값 개수'] = df.nunique().values
     s['고유값'] = [df[col_name].unique() for col_name in df.columns]
+    s['최소값'] = df.min().values
+    s['최대값'] = df.max().values
     return s
+
+from sklearn.metrics import mean_squared_log_error
+def rmsle(true, pred):
+    return np.sqrt(mean_squared_log_error(true, pred)) 
 
 def gini(y_true, y_pred):
     # 실제값과 예측값의 크기가 같은지 확인 (값이 다르면 오류 발생)
