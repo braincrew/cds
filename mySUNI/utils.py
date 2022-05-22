@@ -376,14 +376,15 @@ def set_plot_options(figsize=(15, 10), font_big=15, font_small=12, graph_width=1
 def summary(df):
     print(f'데이터 프레임 형태(shape) : {df.shape}')
     s = pd.DataFrame(df.dtypes, columns=['데이터 타입'])
+    s['최소값'] = df.min()
+    s['최대값'] = df.max()
     s = s.reset_index()
     s = s.rename(columns={'index':'특성명'})
     s['결측치 개수'] = df.isna().sum().values
     s['고유값 개수'] = df.nunique().values
     s['고유값'] = [df[col_name].unique() for col_name in df.columns]
-    s['최소값'] = df.min().values
-    s['최대값'] = df.max().values
     return s
+
 
 from sklearn.metrics import mean_squared_log_error
 def rmsle(true, pred):
