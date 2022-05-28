@@ -204,12 +204,13 @@ project = None
 
 
 class Project:
-    def __init__(self, project_name, class_info, email):
+    def __init__(self, project_name, class_info, email, server='manage'):
         self.project_name = project_name
         self.edu_name = "mySUNI"
         self.edu_rnd = class_info.split()[0]
         self.edu_class = class_info.split()[1]
         self.email = email
+        self.server = server
 
         r = requests.get(PROJECT_DOWNLOAD_URL)
         open(PROJECT_DATA_PATH, 'wb').write(r.content)
@@ -221,9 +222,9 @@ class Project:
         print('파일을 저장하였습니다. 파일명: {}'.format(filename))
         return filename
 
-    def __project_submission(self, file_name, server='manage'):
+    def __project_submission(self, file_name):
         file_path = './'
-        url = f'http://{server}.jaen.kr/api/studentProject/apiScoring?edu_name={self.edu_name}\
+        url = f'http://{self.server}.jaen.kr/api/studentProject/apiScoring?edu_name={self.edu_name}\
         &edu_rnd={self.edu_rnd}&edu_class={self.edu_class}&mail={self.email}&project_name={self.project_name}&file_name={file_name}'
         files = {'file': (file_name, open(file_path + file_name, 'rb'), 'text/csv')}
         r = requests.post(url, files=files)
@@ -254,14 +255,14 @@ class Project:
         print(self.__project_submission(filename))
 
 
-def download_project(project_name, class_info, email, use_path=None, skip_download=False):
+def download_project(project_name, class_info, email, use_path=None, skip_download=False, server='manage'):
     '''
     use_path: 지정 폴더에 다운로드
     skip_download: 폴더에 데이터가 존재할 시 SKIP. 단 CHECKSUM 비교는 안함.
     '''
     global project, files
     try:
-        project = Project(project_name, class_info=class_info, email=email)
+        project = Project(project_name, class_info=class_info, email=email, server=server)
 
         # data 폴더 경로 지정
         DATA_DIR = 'data'
