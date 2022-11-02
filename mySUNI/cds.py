@@ -21,6 +21,11 @@ DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/myS
 PROJECT_DATA_PATH = 'project.json'
 PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/project.json'
 
+# 워크샵 관련 파일 JSON 파일 경로
+WORKSHOP_DATA_PATH = 'workshop.json'
+WORKSHOP_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/workshop.json'
+
+
 ####### 데이터셋 관련 모듈 #######
 
 class Dataset:
@@ -112,54 +117,63 @@ def download_data(dataset_name):
 
 ####### 워크샵 관련 모듈 #######
 
-q = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-실습.ipynb'],
- 'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-실습.ipynb'],
- 'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-실습.ipynb'],
- 'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-실습.ipynb'],
- 'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-실습.ipynb'],
-'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(실습).ipynb',
- 'mySUNI-WorkShop-국민연금 데이터 분석(실습).ipynb',
- 'mySUNI-WorkShop-민간 아파트 가격동향 분석(실습).ipynb',
- 'mySUNI-WorkShop-아파트 실거래가 분석 I(실습).ipynb',
- 'mySUNI-WorkShop-아파트 실거래가 분석 II(실습).ipynb',
- 'mySUNI-WorkShop-유가 가격 분석 (실습).ipynb',
- 'mySUNI-WorkShop-중고차 판매 정보 분석 (실습).ipynb'],
- 'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습(코드추가).ipynb',
-  'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습.ipynb'],
- 'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-실습(코드추가).ipynb',
-  'mySUNI-WorkShop-07-따릉이 대여량 예측-실습.ipynb'],
- 'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-실습(코드추가).ipynb',
-  'mySUNI-WorkShop-08-집 값 예측-실습.ipynb'],
- 'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (실습).ipynb',
-  'mySUNI-WorkShop-사용자 이탈 예측 (실습).ipynb',
-  'mySUNI-WorkShop-에너지 효율 예측 (실습).ipynb',
-  'mySUNI-WorkShop-와인 유형 분류 (실습).ipynb']}
+# q = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-실습.ipynb'],
+#  'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-실습.ipynb'],
+#  'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-실습.ipynb'],
+#  'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-실습.ipynb'],
+#  'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-실습.ipynb'],
+# 'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(실습).ipynb',
+#  'mySUNI-WorkShop-국민연금 데이터 분석(실습).ipynb',
+#  'mySUNI-WorkShop-민간 아파트 가격동향 분석(실습).ipynb',
+#  'mySUNI-WorkShop-아파트 실거래가 분석 I(실습).ipynb',
+#  'mySUNI-WorkShop-아파트 실거래가 분석 II(실습).ipynb',
+#  'mySUNI-WorkShop-유가 가격 분석 (실습).ipynb',
+#  'mySUNI-WorkShop-중고차 판매 정보 분석 (실습).ipynb'],
+#  'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습(코드추가).ipynb',
+#   'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-실습.ipynb'],
+#  'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-실습(코드추가).ipynb',
+#   'mySUNI-WorkShop-07-따릉이 대여량 예측-실습.ipynb'],
+#  'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-실습(코드추가).ipynb',
+#   'mySUNI-WorkShop-08-집 값 예측-실습.ipynb'],
+#  'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (실습).ipynb',
+#   'mySUNI-WorkShop-사용자 이탈 예측 (실습).ipynb',
+#   'mySUNI-WorkShop-에너지 효율 예측 (실습).ipynb',
+#   'mySUNI-WorkShop-와인 유형 분류 (실습).ipynb']}
 
-s = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-해설.ipynb'],
- 'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-해설.ipynb'],
- 'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-해설.ipynb'],
- 'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-해설.ipynb'],
- 'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-해설.ipynb'],
-'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(해설).ipynb',
- 'mySUNI-WorkShop-국민연금 데이터 분석(해설).ipynb',
- 'mySUNI-WorkShop-민간 아파트 가격동향 분석(해설).ipynb',
- 'mySUNI-WorkShop-아파트 실거래가 분석 I(해설).ipynb',
- 'mySUNI-WorkShop-아파트 실거래가 분석 II(해설).ipynb',
- 'mySUNI-WorkShop-유가 가격 분석 (해설).ipynb',
- 'mySUNI-WorkShop-중고차 판매 정보 분석 (해설).ipynb'],
- 'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-해설.ipynb'],
- 'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-해설.ipynb'],
- 'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-해설.ipynb'],
- 'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (해설).ipynb',
-  'mySUNI-WorkShop-사용자 이탈 예측 (해설).ipynb',
-  'mySUNI-WorkShop-에너지 효율 예측 (해설).ipynb',
-  'mySUNI-WorkShop-와인 유형 분류 (해설).ipynb']}
+# s = {'mySUNI-WorkShop-00-Python':['mySUNI-WorkShop-00-Python-해설.ipynb'],
+#  'mySUNI-WorkShop-01-StepWalk':['mySUNI-WorkShop-01-StepWalk-해설.ipynb'],
+#  'mySUNI-WorkShop-02-Pandas':['mySUNI-WorkShop-02-Pandas-해설.ipynb'],
+#  'mySUNI-WorkShop-03-타이타닉 생존자 분석':['mySUNI-WorkShop-03-타이타닉 생존자 분석-해설.ipynb'],
+#  'mySUNI-WorkShop-04-타이타닉 생존자 예측':['mySUNI-WorkShop-04-타이타닉 생존자 예측-해설.ipynb'],
+# 'mySUNi-WorkShop-05-데이터 전처리 및 분석':['mySUNI-WorkShop-CCTV 데이터 분석(해설).ipynb',
+#  'mySUNI-WorkShop-국민연금 데이터 분석(해설).ipynb',
+#  'mySUNI-WorkShop-민간 아파트 가격동향 분석(해설).ipynb',
+#  'mySUNI-WorkShop-아파트 실거래가 분석 I(해설).ipynb',
+#  'mySUNI-WorkShop-아파트 실거래가 분석 II(해설).ipynb',
+#  'mySUNI-WorkShop-유가 가격 분석 (해설).ipynb',
+#  'mySUNI-WorkShop-중고차 판매 정보 분석 (해설).ipynb'],
+#  'mySUNI-WorkShop-06-웨이퍼 불량 유형 분류':['mySUNI-WorkShop-06-웨이퍼 불량 유형 분류-해설.ipynb'],
+#  'mySUNI-WorkShop-07-따릉이 대여량 예측':['mySUNI-WorkShop-07-따릉이 대여량 예측-해설.ipynb'],
+#  'mySUNI-WorkShop-08-집 값 예측':['mySUNI-WorkShop-08-집 값 예측-해설.ipynb'],
+#  'mySUNI-WorkShop-09-머신러닝 연습':['mySUNI-WorkShop-빌딩 전력 소모량 예측 (해설).ipynb',
+#   'mySUNI-WorkShop-사용자 이탈 예측 (해설).ipynb',
+#   'mySUNI-WorkShop-에너지 효율 예측 (해설).ipynb',
+#   'mySUNI-WorkShop-와인 유형 분류 (해설).ipynb']}
+
+r = requests.get(WORKSHOP_DOWNLOAD_URL)
+open(WORKSHOP_DATA_PATH, 'wb').write(r.content)
+
+with open(WORKSHOP_DATA_PATH) as f:
+    workshops = json.load(f)
+    
+q = workshops['q']
+s = workshops['s']
 
 def list_workshop():
     workshop = pd.DataFrame({
         '워크샵':q.keys(),
     })
-    display(workshop)
+    display(workshop.sort_values('워크샵'))
 
 def download_workshop(workshop_name, sol=False, local=False):
     # auth
