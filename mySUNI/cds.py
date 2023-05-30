@@ -15,15 +15,18 @@ from IPython.display import clear_output
 
 # 데이터셋 JSON 파일 경로
 DATASET_DATA_PATH = 'dataset.json'
-DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/dataset.json'
+# DATASET_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/dataset.json'
+DATASET_DOWNLOAD_URL = 'http://data.jaen.kr/download?download_path=%2Fdata%2Ffiles%2FmySUNI%2Fdatasets%2Fdataset.json'
 
 # 프로젝트 관련 파일 JSON 파일 경로
 PROJECT_DATA_PATH = 'project.json'
-PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/project.json'
+# PROJECT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/project.json'
+PROJECT_DOWNLOAD_URL = 'http://data.jaen.kr/download?download_path=%2Fdata%2Ffiles%2FmySUNI%2Fdatasets%2Fproject.json'
 
 # 워크샵 관련 파일 JSON 파일 경로
 WORKSHOP_DATA_PATH = 'workshop.json'
-WORKSHOP_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/workshop.json'
+# WORKSHOP_DOWNLOAD_URL = 'https://raw.githubusercontent.com/braincrew/cds/main/mySUNI/data/workshop.json'
+WORKSHOP_DOWNLOAD_URL = 'http://data.jaen.kr/download?download_path=%2Fdata%2Ffiles%2FmySUNI%2Fdatasets%2Fworkshop.json'
 
 
 ####### 데이터셋 관련 모듈 #######
