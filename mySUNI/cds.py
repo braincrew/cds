@@ -198,7 +198,7 @@ def download_workshop(workshop_name, sol=False, local=False):
 
     print(f'워크샵: {workshop_files}\n==============================\n파일 정보\n')
     for workshop_file in workshop_files:
-        fileurl = "http://sk.jaen.kr:8080/workshop/" + workshop_file
+        fileurl = "http://data.jaen.kr/download?download_path=/data/files/mySUNI/05.%20%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%8C%8C%EC%9D%BC/workshop/" + workshop_file
         r = requests.get(fileurl, auth=HTTPBasicAuth(username, password))
         if local:
             filepath = os.path.join('workshop', f'{workshop_name}', workshop_file)
